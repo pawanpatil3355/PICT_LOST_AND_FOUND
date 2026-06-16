@@ -18,7 +18,7 @@ spec:
     spec:
       containers:
         - name: backend
-          image: pawanpatil3355/pict-lost-and-found-backend:v2.1
+          image: pawanpatil3355/pict-lost-and-found-backend:v2
           ports:
             - containerPort: 8080
 ---
