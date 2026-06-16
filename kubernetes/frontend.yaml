@@ -18,7 +18,7 @@ spec:
     spec:
       containers:
         - name: frontend
-          image: pawanpatil3355/pict-lost-and-found-frontend:v2.2
+          image: pawanpatil3355/pict-lost-and-found-frontend:v2
           ports:
             - containerPort: 80
 ---
