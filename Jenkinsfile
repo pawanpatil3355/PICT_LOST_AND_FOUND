@@ -151,11 +151,11 @@ EOF
             steps{
                 script{
                         dir('server'){
-                            docker_build("pawanpatil3355/pict-lost-and-found-backend","${params.BACKEND_DOCKER_TAG}","pawanpatil3355")
+                            docker_build("pict-lost-and-found-backend","${params.BACKEND_DOCKER_TAG}","pawanpatil3355")
                         }
                     
                         dir('client'){
-                            docker_build("pawanpatil3355/pict-lost-and-found-frontend","${params.FRONTEND_DOCKER_TAG}","pawanpatil3355")
+                            docker_build("pict-lost-and-found-frontend","${params.FRONTEND_DOCKER_TAG}","pawanpatil3355")
                         }
                 }
             }
@@ -164,8 +164,8 @@ EOF
         stage("Docker: Push to DockerHub"){
             steps{
                 script{
-                    docker_push("pawanpatil3355/pict-lost-and-found-backend","${params.BACKEND_DOCKER_TAG}","pawanpatil3355") 
-                    docker_push("pawanpatil3355/pict-lost-and-found-frontend","${params.FRONTEND_DOCKER_TAG}","pawanpatil3355")
+                    docker_push("pict-lost-and-found-backend","${params.BACKEND_DOCKER_TAG}","pawanpatil3355") 
+                    docker_push("pict-lost-and-found-frontend","${params.FRONTEND_DOCKER_TAG}","pawanpatil3355")
                 }
             }
         }
