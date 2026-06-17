@@ -3,7 +3,7 @@
 export AWS_PAGER=""
 export AWS_DEFAULT_REGION="us-east-2"
 
-INSTANCE_ID="i-056e0e1b253efec27"
+INSTANCE_ID="i-0a2e2850e2d461ebf"
 file_to_find="../client/.env.docker"
 
 if [ ! -f "$file_to_find" ]; then
