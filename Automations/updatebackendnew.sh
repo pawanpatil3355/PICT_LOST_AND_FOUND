@@ -1,5 +1,8 @@
 #!/bin/bash
 
+export AWS_PAGER=""
+export AWS_DEFAULT_REGION=ap-south-1
+
 # Set the Instance ID and path to the .env file
 INSTANCE_ID="i-0b953e207c68926fb"
 
@@ -13,7 +16,12 @@ if [ ! -f "$file_to_find" ]; then
 fi
 
 # Retrieve the public IP address of the specified EC2 instance
-ipv4_address=$(aws ec2 describe-instances --instance-ids "$INSTANCE_ID" --query 'Reservations[0].Instances[0].PublicIpAddress' --output text)
+ipv4_address=$(aws ec2 describe-instances \
+  --region "$AWS_DEFAULT_REGION" \
+  --instance-ids "$INSTANCE_ID" \
+  --query 'Reservations[0].Instances[0].PublicIpAddress' \
+  --output text \
+  --no-cli-pager)
 
 if [ -z "$ipv4_address" ]; then
     echo "ERROR: Could not retrieve IP address for instance $INSTANCE_ID"
