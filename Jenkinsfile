@@ -69,7 +69,55 @@ pipeline {
             }
         }
         
-        stage('Exporting environment variables') {
+        stage('Generate Environment Files from Credentials') {
+            steps {
+                script {
+                    withCredentials([
+                        string(credentialsId: 'MONGO_URI', variable: 'MONGO_URI_VAL'),
+                        string(credentialsId: 'JWT_SECRET', variable: 'JWT_SECRET_VAL'),
+                        string(credentialsId: 'CLOUDINARY_CLOUD_NAME', variable: 'CLOUDINARY_CLOUD_NAME_VAL'),
+                        string(credentialsId: 'CLOUDINARY_API_KEY', variable: 'CLOUDINARY_API_KEY_VAL'),
+                        string(credentialsId: 'CLOUDINARY_API_SECRET', variable: 'CLOUDINARY_API_SECRET_VAL')
+                    ]) {
+                        sh '''
+                            # Generate server/.env.docker from Jenkins credentials
+                            cat > server/.env.docker << EOF
+# Server environment for Docker Compose
+# Generated dynamically from Jenkins credentials
+NODE_ENV=production
+PORT=8080
+MONGO_URI=${MONGO_URI_VAL}
+JWT_SECRET=${JWT_SECRET_VAL}
+CLOUDINARY_CLOUD_NAME=${CLOUDINARY_CLOUD_NAME_VAL}
+CLOUDINARY_API_KEY=${CLOUDINARY_API_KEY_VAL}
+CLOUDINARY_API_SECRET=${CLOUDINARY_API_SECRET_VAL}
+ACCESS_COOKIE_MAXAGE=120000
+ACCESS_TOKEN_EXPIRES_IN=120s
+REFRESH_COOKIE_MAXAGE=120000
+REFRESH_TOKEN_EXPIRES_IN=120s
+EOF
+                            echo "✓ Generated server/.env.docker"
+                        '''
+                    }
+                    
+                    withCredentials([
+                        string(credentialsId: 'REACT_APP_API_URL', variable: 'REACT_APP_API_URL_VAL')
+                    ]) {
+                        sh '''
+                            # Generate client/.env.docker from Jenkins credentials
+                            cat > client/.env.docker << EOF
+# Client environment for Docker Compose
+# Generated dynamically from Jenkins credentials
+REACT_APP_API_URL=${REACT_APP_API_URL_VAL}
+EOF
+                            echo "✓ Generated client/.env.docker"
+                        '''
+                    }
+                }
+            }
+        }
+        
+        stage('Update Environment Variables from EC2') {
             parallel {
                 stage("Backend env setup") {
                     steps {

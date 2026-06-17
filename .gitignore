@@ -1,7 +1,6 @@
 .qodo
 node_modules
 .env
+.env.docker
 *.env.docker
-!server/.env.docker
-!client/.env.docker
 *env.docker.png
